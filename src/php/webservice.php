@@ -1,17 +1,24 @@
 <?php
-/*
+header('Content-Type: application/json');
+$data = json_decode(file_get_contents(__DIR__ . '/../data/testdata.json'));
 
-TODO:
+if($_SERVER['REQUEST_METHOD'] == "POST") {
+  $entityBody = json_decode(file_get_contents('php://input'), true);
+  if (isset($entityBody['collapsed'])) {
+    foreach ($data->nodes as $node) {
+      if ($node->id === $entityBody['id']) {
+        $node->collapsed = !$node->collapsed;
+        $data->nodes[$node->id] = $node;
+      }
 
-If your system has PHP installed, you can easily test this script by using PHP's
-built-in web server:
+      $json = json_encode($data);
+      file_put_contents(__DIR__ . '/../data/testdata.json', $json);
+    }
+  } else if (isset($entityBody['name'])) {
+    $data->settings[0]->value = !$data->settings[0]->value;
+    $json = json_encode($data);
+    file_put_contents(__DIR__ . '/../data/testdata.json', $json);
+  }
+}
 
-$ php -S localhost:8000 -t src/php/
-
-You can then fetch() this script in JavaScript with the following URL:
-http://localhost:8000/webservice.php
-
-*/
-
-
-echo 'Hello';
+echo json_encode($data);
