@@ -39,11 +39,11 @@ function App() {
   }
 
   // eslint-disable-next-line react/prop-types
-  function ListItem({ node }) {
+  function Node({ node }) {
     // eslint-disable-next-line react/prop-types
     const [collapsed, setCollapsed] = useState(node.collapsed)
     // eslint-disable-next-line react/prop-types
-    const nestedNodes = (node.children || []).map(newNode => <ListItem key={newNode.id} node={newNode} type="child" />)
+    const nestedNodes = (node.children || []).map(newNode => <Node key={newNode.id} node={newNode} type="child" />)
 
     return (
     // eslint-disable-next-line react/prop-types
@@ -102,7 +102,7 @@ function App() {
   if (data) {
     const nodeTree = modifyNodeArray([...data.nodes])
     nodes = nodeTree.map(node => (
-      <ListItem key={node.id} node={node} onClick={() => handleClick(node.id)} />
+      <Node key={node.id} node={node} onClick={() => handleClick(node.id)} />
     ))
   }
   return (
